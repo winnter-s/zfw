@@ -68,7 +68,8 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            // auth 登录时所用的模型
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [
