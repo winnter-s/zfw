@@ -10,21 +10,21 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
     Route::post('login','LoginController@login')->name('admin.login');
 
     // 后台需要验证才能通过
-    Route::group(['middleware'=>['ckadmin']], function (){
+    Route::group(['middleware'=>['ckadmin'],'as'=>'admin.'], function (){
         // 后台首页显示
-        Route::get('index','IndexController@index')->name('admin.index');
+        Route::get('index','IndexController@index')->name('index');
         // 欢迎页面
-        Route::get('welcome','IndexController@welcome')->name('admin.welcome');
+        Route::get('welcome','IndexController@welcome')->name('welcome');
         // 退出
-        Route::get('logout','IndexController@logout')->name('admin.logout');
+        Route::get('logout','IndexController@logout')->name('logout');
 
         // ----- 用户管理 -----
         // 用户列表
-        Route::get('user/index','UserController@index')->name('admin.user.index');
+        Route::get('user/index','UserController@index')->name('user.index');
         // 添加用户显示
-        Route::get('user/add','UserController@create')->name('admin.user.create');
+        Route::get('user/add','UserController@create')->name('user.create');
         // 添加用户处理
-        Route::post('user/index','UserController@store')->name('admin.user.store');
+        Route::post('user/index','UserController@store')->name('user.store');
         // 发送邮件
 //        Route::get('user/email',function(){
 //            \Mail::raw('测试一下发邮件',function(\Illuminate\Mail\Message $message){
@@ -48,14 +48,20 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
 //            });
 //        });
         //删除用户
-        Route::delete('user/del/{id}','UserController@del')->name('admin.user.del');
+        Route::delete('user/del/{id}','UserController@del')->name('user.del');
         // 还原软删除用户
-        Route::get('user/restore/{id}','UserController@restore')->name('admin.user.restore');
+        Route::get('user/restore/{id}','UserController@restore')->name('user.restore');
         // 全选删除
-        Route::delete('user/delall','UserController@delall')->name('admin.user.delall');
+        Route::delete('user/delall','UserController@delall')->name('user.delall');
         // 修改用户 显示
-        Route::get('user/edit/{id}','UserController@edit')->name('admin.user.edit');
-        Route::put('user/edit/{id}','UserController@update')->name('admin.user.edit');
+        Route::get('user/edit/{id}','UserController@edit')->name('user.edit');
+        Route::put('user/edit/{id}','UserController@update')->name('user.edit');
+        // 角色管理
+        // 资源路由
+        Route::resource('role','RoleController');
+
+        // 节点管理
+        Route::resource('node','NodeController');
     });
 
 });

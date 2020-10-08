@@ -15,7 +15,10 @@ class RoleNode extends Migration
     public function up()
     {
         Schema::create('role_node', function (BluePrint $table){
-
+            // 角色 ID
+            $table->unsignedInteger('role_id')->default(0)->comment('角色ID');
+            // 节点 ID
+            $table->unsignedInteger('node_id')->default(0)->comment('节点ID');
         });
     }
 
@@ -26,6 +29,6 @@ class RoleNode extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('nodes');
     }
 }
