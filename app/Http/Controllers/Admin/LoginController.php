@@ -7,6 +7,12 @@ use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
+    // 构造方法
+//    public function __construct()
+//    {
+//        $this->middleware(['ckadmin:longin']);
+//    }
+
     // 登录显示
     public function index()
     {
@@ -43,8 +49,4 @@ class LoginController extends Controller
         return redirect(route('admin.login'))->withErrors(['error'=>'登录失败']);
     }
 
-    public function logout()
-    {
-
-    }
 }
