@@ -2,6 +2,7 @@
 // 用户后台管理
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use \Illuminate\Mail\Message;
@@ -92,5 +93,22 @@ class UserController extends BaseController
         $spass = $request->get('spassword');
         $oldpass = $model->password;
         Hash::check($spass,$oldpass);
+    }
+
+    // 分配角色和处理
+    public function role(Request $request,User $user)
+    {
+        // 判断是否是post提示
+        if($request->isMethod('post'))
+        {
+            $post = $this->validate($request,[
+                'role_id'=>'required|min:1'
+            ],['role_id.required'=>'必须选择']);
+            $user->update($post);
+            return redirect(route('admin.user.index'));
+        }
+        // 读取所有角色
+        $roleAll = Role::all();
+        return view('admin.user.role',compact('user','roleAll'));
     }
 }

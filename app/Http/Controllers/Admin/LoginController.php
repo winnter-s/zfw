@@ -37,9 +37,19 @@ class LoginController extends Controller
         $bool = auth()->attempt($post);
         // 判断是否登录成功
         if($bool){ // 登录成功
-            // auth()->user() 返回当前登录的用户模型对象 存储在 session 中
-            // laravel 默认 session 是存储在文件中 以后可以优化到 memcached redis
-            $model = auth()->user();
+            // 判断一下是否是超级管理员
+            if (config('rbac.super') != $post['username'])
+            {
+                // auth()->user() 返回当前登录的用户模型对象 存储在 session 中
+                // laravel 默认 session 是存储在文件中 以后可以优化到 memcached redis
+                $userModel = auth()->user();
+                $roleModel = $userModel->role;
+                $nodeArr = $roleModel->nodes()->pluck('route_name','id')->toArray();
+                // 权限保持到 session
+                session(['admin.auth'=>$nodeArr]);
+            } else {
+                session(['admin.auth' => true]);
+            }
 
             // 跳转以后页面
             return redirect(route('admin.index'));

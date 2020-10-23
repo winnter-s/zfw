@@ -2,67 +2,98 @@
 @section('cnt')
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
         <span class="c-gray en">&gt;</span> 用户中心
-        <span class="c-gray en">&gt;</span> 添加角色
+        <span class="c-gray en">&gt;</span> 添加节点
         <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
             <i class="Hui-iconfont">&#xe68f;</i>
         </a>
     </nav>
     <article class="page-container">
-        <form action="{{route('admin.role.store')}}" method="post" class="form form-horizontal" id="form-member-add">
-            @csrf
+        <form action="{{route('admin.node.store')}}" method="post" class="form form-horizontal" @submit.prevent="dopost">
+
             <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否顶级：</label>
                 <div class="formControls col-xs-8 col-sm-9">
-                    <input type="text" class="input-text" name="name" autocomplete="off">
+                    <span class="select-box">
+                        <select class="select" @change="changePid">
+                            <option value="0">==顶级==</option>
+                            @foreach($data as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+				    </span>
+                </div>
+            </div>
+
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    {{-- lazy 延时绑定 --}}
+                    <input type="text" class="input-text" name="name" v-model.lazy="info.name">
+                </div>
+            </div>
+
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>路由别名：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" name="route_name" v-model="info.route_name">
+                </div>
+            </div>
+
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否是菜单：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <div class="radio-box">
+                        <input type="radio" value="0" v-model="info.is_menu">
+                        <label for="sex-1">否</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" value="1" v-model="info.is_menu">
+                        <label for="sex-2">是</label>
+                    </div>
                 </div>
             </div>
 
             <div class="row cl">
                 <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                    <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;添加角色&nbsp;&nbsp;">
+                    <input class="btn btn-primary radius" type="submit" value="添加节点">
                 </div>
             </div>
+
         </form>
     </article>
 @endsection
 
+{{-- vue 目前是用不了 以后进行加工 --}}
 @section('js')
-    <script type="text/javascript" src="/admin/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
-    <script type="text/javascript" src="/admin/lib/jquery.validation/1.14.0/validate-methods.js"></script>
-    <script type="text/javascript" src="/admin/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-
+    <script src="/js/vue.js"></script>
     <script>
-
-        // 前端表单验证
-        $("#form-member-add").validate({
-            rules:{
-                // 表单元素名称
-                name:{
-                    required:true
+        new Vue({
+            el: '.page-container',
+            data:{
+                info:{
+                    _token: "{{ csrf_token() }}",
+                    pid:0,
+                    name:'',
+                    route_name:'',
+                    is_menu:0
                 }
             },
-            // 取消键盘事件
-            onkeyup:false,
-            // 验证成功后的样式
-            success:"valid",
-            // 验证通过后, 处理的方法
-            submitHandler:function(form){
-                // 表单提交
-                let url = $(form).attr('action');
-                // 表单序列化  _token=aaaa&name=dfsfe
-                let data = $(form).serialize();
-
-                // jquery post提交
-                $.post(url, data).then(({status,msg})=>{
-                    if(status==0){
-                        layer.msg(msg,{icon:1,time:2000},()=>{
-                            location.href = "{{ route('admin.role.index') }}";
-                        })
+            methods: {
+                // 异步变同步 es7 async await
+                async dopost(evt){
+                    let url = evt.target.action;
+                    let {status,msg} = await $.post(url, this.info);
+                    if(status === 0){
+                        location.href="{{ route('admin.node.index') }}";
                     } else {
-                        layer.msg(msg,{icon:2,time:2000});
+                        layer.msg(msg,{icon:2,time:1000});
                     }
-                })
+                }
+            },
+            changePid(evt){
+                // 下拉的值
+                this.info.pid = evt.target.value || 0;
             }
-        })
+        });
     </script>
 @endsection

@@ -17,7 +17,7 @@
         </form>
         <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="{{route('admin.role.create')}}" class="btn btn-primary radius">
+            <a href="{{route('admin.node.create')}}" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加节点</a>
         </span>
         </div>
@@ -36,17 +36,26 @@
                 <tbody>
                 @foreach($data as $item)
                     <tr class="text-c">
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->route_name }}</td>
-                        <td>{{ $item->is_menu }}</td>
+                        <td>{{ $item['id'] }}</td>
+                        <td class="text-l">
+                            {{ $item['html'] }}
+                            {{ $item['name'] }}</td>
+                        <td>{{ $item['route_name'] }}</td>
+                        <td>
+                            {{--{!! $item['menu'] !!}--}}
+                            @if($item['is_menu'])
+                                <span class="label label-success radius">是</span>
+                            @else
+                                <span class="label label-danger radius">否</span>
+                            @endif
+                        </td>
 {{--                        <td>--}}
 {{--                            <a href="" class="label label-success radius">权限</a>--}}
 {{--                        </td>--}}
-                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item['created_at'] }}</td>
                         <td class="td-manage">
-                            <a href="{{ route('admin.node.edit',$item) }}" class="label label-secondary radius">修改</a>
-                            <a href="{{route('admin.node.destroy',['id' => $item->id])}}" class="label label-warning radius">恢复</a>
+                            <a href="{{ route('admin.node.edit',['id' => $item['id']]) }}" class="label label-secondary radius">修改</a>
+                            <a href="{{route('admin.node.destroy',['id' => $item['id']])}}" class="label label-warning radius">恢复</a>
                         </td>
                     </tr>
                 @endforeach

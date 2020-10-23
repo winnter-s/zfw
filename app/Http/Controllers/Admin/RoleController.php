@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Node;
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class RoleController extends BaseController
@@ -93,6 +93,25 @@ class RoleController extends BaseController
         Role::where('id',$id)->update($request->only('name'));
 
         return ['status'=> 0, 'msg' => '修改用户成功'];
+    }
+
+    // 给角色分配权限
+    public function node(Role $role)
+    {
+//        dump($role->nodes()->pluck('name'));
+//        dump($role->nodes->toArray());
+        $nodeAll = (new Node)->getAllList();
+        // 读取当前角色所拥有的权限
+        $nodes = $role->nodes()->pluck('id')->toArray();
+
+        return view('admin.role.node',compact('role','nodeAll','nodes'));
+    }
+
+    // 分配管理
+    public function nodeSave(Request $request,Role $role)
+    {
+        $role->nodes()->sync($request->get('node'));
+        return redirect(route('admin.role.node',$role));
     }
 
     /**

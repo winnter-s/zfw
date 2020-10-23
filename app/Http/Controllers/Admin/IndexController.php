@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Node;
 
 class IndexController extends Controller
 {
     // 后台首页显示
     public function index()
     {
-        return view('admin.index.index');
+        $auth = session('admin.auth');
+        // 读取菜单
+        $menuData = (new Node())->treeData($auth);
+
+
+        // 指定模板 视图
+        return view('admin.index.index',compact('menuData'));
     }
 
     // 欢迎页面

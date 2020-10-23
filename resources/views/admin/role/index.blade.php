@@ -38,7 +38,7 @@
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->name }}</td>
                         <td>
-                            <a href="" class="label label-success radius">权限</a>
+                            <a href="{{ route('admin.role.node',$item) }}" class="label label-success radius">权限</a>
                         </td>
                         <td>{{ $item->created_at }}</td>
                         <td class="td-manage">

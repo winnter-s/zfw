@@ -15,8 +15,9 @@ class NodeController extends Controller
      */
     public function index()
     {
+        // 返回的是数组
         // 获取所有节点
-        $data = Node::all();
+        $data = (new Node)->getAllList();
         return view('admin.node.index',compact('data'));
     }
 
@@ -27,7 +28,9 @@ class NodeController extends Controller
      */
     public function create()
     {
-        //
+        // 获取所有的顶部
+        $data = Node::where('pid',0)->get();
+        return view('admin.node.create',compact('data'));
     }
 
     /**
@@ -38,7 +41,11 @@ class NodeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 表单验证
+        // try() catch()
+        // 入库
+        Node::create($request->except('_token'));
+        return ['status'=>0,'msg'=>'添加权限成功'];
     }
 
     /**

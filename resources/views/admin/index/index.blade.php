@@ -34,16 +34,18 @@
 </header>
 <aside class="Hui-aside">
     <div class="menu_dropdown bk_2">
-        <dl id="menu-admin">
-            <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="{{route('admin.user.index')}}" data-title="用户列表" href="javascript:void(0)">用户列表</a></li>
-                    <li><a data-href="{{route('admin.role.index')}}" data-title="角色列表" href="javascript:void(0)">角色列表</a></li>
-                    <li><a data-href="{{route('admin.node.index')}}" data-title="权限列表" href="javascript:void(0)">权限列表</a></li>
-                </ul>
-            </dd>
-        </dl>
+        @foreach($menuData as $item)
+            <dl id="menu-admin">
+                <dt><i class="Hui-iconfont">&#xe62d;</i>{{$item['name']}}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+                <dd>
+                    <ul>
+                        @foreach($item['sub'] as $subitem)
+                          <li><a data-href="{{route($subitem['route_name'])}}" data-title="{{$subitem['name']}}" href="javascript:void(0)">{{$subitem['name']}}</a></li>
+                        @endforeach
+                    </ul>
+                </dd>
+            </dl>
+        @endforeach
     </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

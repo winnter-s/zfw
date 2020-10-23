@@ -55,8 +55,14 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
         Route::delete('user/delall','UserController@delall')->name('user.delall');
         // 修改用户 显示
         Route::get('user/edit/{id}','UserController@edit')->name('user.edit');
+        // 修改用户 处理
         Route::put('user/edit/{id}','UserController@update')->name('user.edit');
+        // 给用户分配权限 角色
+        Route::match(['get','post'],'user/role/{user}','UserController@role')->name('user.role');
         // 角色管理
+        // 分配权限
+        Route::get('role/node/{role}','RoleController@node')->name('role.node');
+        Route::post('role/node/{role}','RoleController@nodeSave')->name('role.node');
         // 资源路由
         Route::resource('role','RoleController');
 
