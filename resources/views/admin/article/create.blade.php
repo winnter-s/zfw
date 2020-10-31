@@ -12,7 +12,7 @@
         </a>
     </nav>
     <article class="page-container">
-        <form enctype="multipart/form-data" action="{{route('admin.article.store')}}" method="post" class="form form-horizontal">
+        <form action="{{route('admin.article.store')}}" method="post" class="form form-horizontal">
             @csrf
 
 
@@ -32,9 +32,13 @@
 
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>文章图片：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    {{--<input type="file" class="input-text" name="pic">--}}
+                <div class="formControls col-xs-4 col-sm-5">
+                    <input type="hidden" name="pic" id="pic" value="{{ config('up.pic') }}">
+                    {{-- 表单提交时的封面地址 --}}
                     <div id="picker">上传文章封面</div>
+                </div>
+                <div class="formControls col-xs-4 col-sm-4">
+                    <img src="" id="img" style="width: 100px;">
                 </div>
             </div>
 
@@ -78,15 +82,30 @@
             swf: '/webuploader/Uploader.swf',
 
             // 文件接收服务端。 上传 PHP 的代码
-            server: '',
-
+            server: '{{ route('admin.article.upfile') }}',
+            // 文件上传时 携带的参数
+            formData:{
+                _token:'{{csrf_token()}}'
+            },
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#picker',
+            pick: {
+                id:'#picker',
+                // 是否上传多个文件
+                multiple: false
+            },
 
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
             resize: true
         });
-        显示
+        // 上传成功时的回调方法
+        uploader.on( 'uploadSuccess', function(file, ret) {
+            // 图片路径
+            let src= ret.url;
+            // 给表单添加value值
+            $('#pic').val(src);
+            // 给图片添加src
+            $('#img').attr('src',src);
+        });
     </script>
 @endsection

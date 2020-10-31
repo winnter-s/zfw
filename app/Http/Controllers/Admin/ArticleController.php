@@ -144,10 +144,10 @@ class ArticleController extends Controller
     {
         // 封面图片
         $pic = config('up.pic');
-        if($request->hasFile('pic')){
+        if($request->hasFile('file')){
             // 上传
             // 参数2 配置的节点名称
-            $ret = $request->file('pic')->store('','article');
+            $ret = $request->file('file')->store('','article');
             $pic = '/uploads/article/' . $ret;
         }
 
@@ -162,16 +162,9 @@ class ArticleController extends Controller
      */
     public function store(AddArtRequest $request)
     {
-        // 封面图片
-        $pic = config('up.pic');
-        if($request->hasFile('pic')){
-            // 上传
-            // 参数2 配置的节点
-            $ret = $request->file('pic')->store('','article');
-            $pic = '/uploads/article/' . $ret;
-        }
-        $post = $request->except('_token');
-        $post['pic'] = $pic;
+
+        $post = $request->except(['_token','file']);
+        // 添加到数据库
         Article::create($post);
         return redirect(route('admin.article.index'));
     }
@@ -188,22 +181,15 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
+     * 文章修改
      */
     public function edit(Article $article)
     {
-        //
+        return view('admin.article.edit',compact('article'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
+     * 修改处理
      */
     public function update(Request $request, Article $article)
     {
@@ -218,6 +204,8 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        //软删除
+        $article->delete();
+        return ['id' => 1];
     }
 }

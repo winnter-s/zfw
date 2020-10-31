@@ -86,7 +86,7 @@
                 // 显示的html内容
                 var html = `
                     <a href="/admin/article/${id}/edit" class="label label-secondary radius">修改</a>
-                    <a href="/admin/article/${id}" class="label label-warning radius">删除</a>
+                    <a href="/admin/article/${id}" onclick="return delArticle(event,this)" class="label label-warning radius">删除</a>
                 `;
                 // html 添加到 td 中
                 td.html(html);
@@ -97,6 +97,46 @@
         function dopost(){
             dataTable.ajax.reload();
             // 取消表单默认行为
+            return false;
+        }
+
+        // 删除
+        function delArticle2(obj){
+            // 请求的 url 地址
+            let url = $(obj).attr('href');
+            // 发起ajax
+            // fetch 浏览器自带 原生
+            let ret = fetch(url,{
+                method: 'delete',
+                headers:{
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+            }).then(res=>{
+                return res.json();
+            }).then(data=>{
+                console.log(data)
+            });
+            // 取消默认行为
+            return false;
+        }
+
+        // 删除 promise
+        async function delArticle1(evt,obj){
+            evt.preventDefault();
+            // 请求的 url 地址
+            let url = $(obj).attr('href');
+            // 发起ajax
+            // fetch 浏览器自带 原生
+            let ret = await fetch(url,{
+                method: 'delete',
+                headers:{
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+            });
+            let json = await ret.json();
+            console.log(json);
+
+            // 取消默认行为
             return false;
         }
     </script>
