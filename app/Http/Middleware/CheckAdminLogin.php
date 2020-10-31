@@ -29,7 +29,7 @@ class CheckAdminLogin
             exit('你没有权限');
         }
         // 使用request传到下级去
-        $request->auths = $auths;
+        $request->auths = $auths;  
         // 如果没有停止则向后执行
         return $next($request);
     }

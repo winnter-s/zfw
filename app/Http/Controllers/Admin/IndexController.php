@@ -15,6 +15,7 @@ class IndexController extends Controller
         $menuData = (new Node())->treeData($auth);
 
 
+
         // 指定模板 视图
         return view('admin.index.index',compact('menuData'));
     }

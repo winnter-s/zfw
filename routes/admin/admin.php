@@ -68,6 +68,9 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
 
         // 节点管理
         Route::resource('node','NodeController');
+        Route::post('article/upfile','ArticleController@upfile')->name('article.upfile');
+        // 资源路由
+        Route::resource('article','ArticleController');
     });
 
 });

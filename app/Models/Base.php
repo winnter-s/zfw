@@ -42,8 +42,10 @@ class Base extends Model
             if($pid == $val['pid']) {
                 $val['sub'] = $this->subTree($data,$val['id']);
                 $arr[] = $val;
+                var_dump($arr);
             }
         }
+
         return $arr;
     }
 }
