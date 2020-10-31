@@ -12,9 +12,8 @@
         </a>
     </nav>
     <article class="page-container">
-        <form action="{{route('admin.article.update',$article)}}" method="post" class="form form-horizontal">
-            @method('PUT')
-            @csrf
+        <form action="{{route('admin.article.update',$article)}}" ref="frm" class="form form-horizontal">
+
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>文章标题：</label>
                 <div class="formControls col-xs-8 col-sm-9">
@@ -25,7 +24,7 @@
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>文章描述：</label>
                 <div class="formControls col-xs-8 col-sm-9">
-                    <input type="text" class="input-text" name="desn" :value="info.desn">
+                    <input type="text" class="input-text" name="desn" v-model="info.desn">
                 </div>
             </div>
 
@@ -50,7 +49,7 @@
 
             <div class="row cl">
                 <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                    <input class="btn btn-primary radius" type="submit" value="修改文章">
+                    <input class="btn btn-primary radius" type="button" @click="dopost" value="修改文章">
                 </div>
             </div>
 
@@ -119,7 +118,25 @@
                     // 虚拟 dom
                     this.info.pic = src;
                 });
+            },
+            methods:{
+                async dopost(){
+                    // 获取内容
+                    this.info.body = this.editor.getContent();
+                    var frmData = JSON.stringify(this.info);
+                    let ret = await fetch(this.$refs.frm.action,{
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: frmData
+                    });
+                    let json = await ret.json();
+                    location.href = json.url;
+                }
             }
+
         });
 
 

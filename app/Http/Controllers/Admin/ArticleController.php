@@ -193,7 +193,9 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+        $putData = $request->except(['action','created_at','updated_at','deleted_at','id']);
+        $article->update($putData);
+        return ['status' => 0, 'url' => route('admin.article.index')];
     }
 
     /**
