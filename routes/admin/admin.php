@@ -71,6 +71,9 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
         Route::post('article/upfile','ArticleController@upfile')->name('article.upfile');
         // 资源路由
         Route::resource('article','ArticleController');
+        // 房源属性
+        Route::post('fangattr/upfile','FangattrController@upfile')->name('fangattr.upfile');
+        Route::resource('fangattr','FangAttrController');
     });
 
 });

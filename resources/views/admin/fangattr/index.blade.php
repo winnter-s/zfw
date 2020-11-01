@@ -2,8 +2,8 @@
 @extends('admin.common.main')
 @section('cnt')
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
-        <span class="c-gray en">&gt;</span> 用户中心
-        <span class="c-gray en">&gt;</span> 节点列表
+        <span class="c-gray en">&gt;</span> 房源属性管理
+        <span class="c-gray en">&gt;</span> 房源属性列表
         <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
             <i class="Hui-iconfont">&#xe68f;</i>
         </a>
@@ -17,8 +17,8 @@
         </form>
         <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="{{route('admin.node.create')}}" class="btn btn-primary radius">
-                <i class="Hui-iconfont">&#xe600;</i> 添加节点</a>
+            <a href="{{route('admin.fangattr.create')}}" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe600;</i> 添加房源属性</a>
         </span>
         </div>
         <div class="mt-20">
@@ -26,9 +26,9 @@
                 <thead>
                 <tr class="text-c">
                     <th width="80">ID</th>
-                    <th width="100">节点名称</th>
-                    <th width="100">路由别名</th>
-                    <th width="100">是否菜单</th>
+                    <th width="100">房源属性</th>
+                    <th width="100">图标</th>
+                    <th width="100">字段名称</th>
                     <th width="130">加入时间</th>
                     <th width="100">操作</th>
                 </tr>
@@ -40,22 +40,12 @@
                         <td class="text-l">
                             {{ $item['html'] }}
                             {{ $item['name'] }}</td>
-                        <td>{{ $item['route_name'] }}</td>
-                        <td>
-                            {{--{!! $item['menu'] !!}--}}
-                            @if($item['is_menu'])
-                                <span class="label label-success radius">是</span>
-                            @else
-                                <span class="label label-danger radius">否</span>
-                            @endif
-                        </td>
-{{--                        <td>--}}
-{{--                            <a href="" class="label label-success radius">权限</a>--}}
-{{--                        </td>--}}
+                        <td><img src="{{$item['icon']}}" style="width:50px;" /></td>
+                        <td>{{ $item['field_name'] }}</td>
                         <td>{{ $item['created_at'] }}</td>
                         <td class="td-manage">
-                            <a href="{{ route('admin.node.edit',['id' => $item['id']]) }}" class="label label-secondary radius">修改</a>
-                            <a href="{{route('admin.node.destroy',['id' => $item['id']])}}" class="label label-warning radius">删除</a>
+                            <a href="{{ route('admin.fangattr.edit',['id' => $item['id']]) }}" class="label label-secondary radius">修改</a>
+                            <a data-href="{{route('admin.fangattr.destroy',['id' => $item['id']])}}" class="delbtn label label-warning radius">删除</a>
                         </td>
                     </tr>
                 @endforeach
@@ -71,6 +61,26 @@
 <script type="text/javascript" src="/admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/admin/lib/laypage/1.2/laypage.js"></script>
 <script>
-
+    // 删除事件绑定
+    $('.delbtn').click(function(){
+        let _this = $(this);
+        // 请求的 url 地址
+        let url = _this.attr('data-href');
+        // 确认弹窗
+        layer.confirm('您真的要删除此条记录信息吗?', {
+            btn: ['确认删除','考虑一下']
+        }, () =>{ // 真的选择了删除
+            // 发起 ajax
+            $.ajax({
+                url,
+                type: 'delete',
+                data: {_token: "{{csrf_token()}}"}
+            }).then(ret=>{
+                layer.msg(ret.msg, {icon:1,time:2000},()=>{
+                    _this.parents('tr').remove();
+                });
+            });
+        });
+    });
 </script>
 @endsection

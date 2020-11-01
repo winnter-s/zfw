@@ -47,11 +47,17 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+        // 文章上传封面
         'article' => [
             'driver' => 'local',
             // 上传图片的路径
             'root' => public_path('uploads/article'),
+        ],
+        // 房源属性上传icon
+        'fangattr' => [
+            'driver' => 'local',
+            // 上传图片的路径
+            'root' => public_path('uploads/fangattr'),
         ],
 
         'public' => [
