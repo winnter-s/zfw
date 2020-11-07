@@ -71,9 +71,20 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
         Route::post('article/upfile','ArticleController@upfile')->name('article.upfile');
         // 资源路由
         Route::resource('article','ArticleController');
+
         // 房源属性
         Route::post('fangattr/upfile','FangattrController@upfile')->name('fangattr.upfile');
         Route::resource('fangattr','FangAttrController');
+
+        // 房东管理
+        // 到处 excel
+        Route::get('fangowner/exports','FangOwnerController@exports')->name('fangowner.exports');
+        // 文件上传
+        Route::post('fangowner/upfile','FangOwnerController@upfile')->name('fangowner.upfile');
+        // 删除图片
+        Route::get('fangowner/delfile','FangOwnerController@delfile')->name('fangowner.delfile');
+
+        Route::resource('fangowner','FangOwnerController');
     });
 
 });

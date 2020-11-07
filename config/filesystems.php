@@ -59,6 +59,12 @@ return [
             // 上传图片的路径
             'root' => public_path('uploads/fangattr'),
         ],
+        // 房东身份证
+        'fangowner' => [
+            'driver' => 'local',
+            // 上传图片的路径
+            'root' => public_path('uploads/fangowner'),
+        ],
 
         'public' => [
             'driver' => 'local',
