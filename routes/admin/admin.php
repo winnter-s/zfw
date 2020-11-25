@@ -85,6 +85,23 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
         Route::get('fangowner/delfile','FangOwnerController@delfile')->name('fangowner.delfile');
 
         Route::resource('fangowner','FangOwnerController');
+
+        // 房源管理
+        // 创建生成es索引的路由
+        Route::get('fang/es/init','FangController@esinit')->name('fang.esinit');
+        // 改变房源状态
+        Route::get('fang/changestatus','FangController@changestatus')->name('fang.changestatus');
+
+        // 文件上传
+        Route::post('fang/upfile','FangController@upfile')->name('fang.upfile');
+        // 获取市或者县
+        Route::get('fang/city','FangController@city')->name('fang.city');
+        Route::get('fang/city','FangController@city')->name('fang.city');
+        Route::resource('fang','FangController');
+
+        // 预约资源管理
+        Route::resource('notice','NoticeController');
+
     });
 
 });

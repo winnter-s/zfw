@@ -88,11 +88,11 @@
                     } else {
                         layer.msg(msg,{icon:2,time:1000});
                     }
+                },
+                changePid(evt){
+                    // 下拉的值
+                    this.info.pid = evt.target.value || 0;
                 }
-            },
-            changePid(evt){
-                // 下拉的值
-                this.info.pid = evt.target.value || 0;
             }
         });
     </script>
