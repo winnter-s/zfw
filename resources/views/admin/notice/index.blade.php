@@ -32,11 +32,11 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="{{route('admin.fangowner.create')}}" class="btn btn-primary radius">
+            <a href="{{route('admin.notice.create')}}" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加预约</a>
             <a class="btn btn-danger radius" onclick="deleteAll()">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a href="{{route('admin.fangowner.exports')}}" class="btn btn-danger radius" onclick="deleteAll()">
+            <a href="#" class="btn btn-danger radius" onclick="deleteAll()">
                 <i class="Hui-iconfont">&#xe6e2;</i> 导出成excel</a>
         </span>
     </div>

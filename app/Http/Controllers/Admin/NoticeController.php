@@ -19,24 +19,25 @@ class NoticeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 添加显示
      */
     public function create()
     {
-        //
+        return view('admin.notice.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 添加入库
      */
     public function store(Request $request)
     {
-        //
+        // 入库操作
+        $postData = $request->except(['_token']);
+        Notice::create($postData);
+        // 此处不需要任何添加完成后的代码, 我们在时间观察类中写
+
+        // 跳转
+        return redirect(route('admin.notice.index'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 // 引入对应的命名空间
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         // 自定义验证规则
         Validator::extend('phone', function ($attribute, $value, $parameters, $validator) {
             // 返回 true/false
